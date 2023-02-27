@@ -3,6 +3,7 @@ use std::borrow::Cow;
 use regex::Regex;
 use regex::Replacer;
 use regex::Captures;
+use regex::CaptureMatches;
 use lazy_static::lazy_static;
 
 pub use colored::*;
@@ -32,6 +33,13 @@ fn get_styles<R>(text: &str, rep: R) -> Cow<str>
     RE.replace_all(text, rep)
 }
 
+fn iter_substyles(text: &str) -> CaptureMatches
+{
+    lazy_static! {
+        static ref RE: Regex = Regex::new(r"\{\+(.+?)\}(.*?)\{-\}").unwrap();
+    }
+    RE.captures_iter(text)
+}
 
 
 
@@ -132,7 +140,39 @@ fn test_style<'a>(style: &'a str) -> Box<dyn Fn(ColoredString) -> ColoredString 
     }
 }
 
+fn update_with_style(text: ColoredString, colored: &ColoredString) -> ColoredString
+{
+    let mut result = text;
+    if let Some(fgcolor) = colored.fgcolor() {
+        result = result.color(fgcolor);
+    }
+    if let Some(bgcolor) = colored.bgcolor() {
+        result = result.on_color(bgcolor);
+    }
+    if colored.style().contains(Styles::Bold) { result = result.bold(); }
+    if colored.style().contains(Styles::Underline) { result = result.underline(); }
+    if colored.style().contains(Styles::Italic) { result = result.italic(); }
+    if colored.style().contains(Styles::Dimmed) { result = result.dimmed(); }
+    if colored.style().contains(Styles::Reversed) { result = result.reverse(); }
+    if colored.style().contains(Styles::Blink) { result = result.blink(); }
+    if colored.style().contains(Styles::Hidden) { result = result.hidden(); }
+    if colored.style().contains(Styles::Strikethrough) { result = result.strikethrough(); }
+    result
+}
 
+fn set_style_from(text: &str, colored: &ColoredString) -> ColoredString
+{
+    let mut result = ColoredString::from(text);
+    result = update_with_style(result, colored);
+    result
+}
+
+fn add_style_from(colored_from: &ColoredString, colored_to: &ColoredString) -> ColoredString
+{
+    let mut result = set_style_from(&colored_to, colored_from);
+    result = update_with_style(result, colored_to);
+    result
+}
 
 pub fn colored(text: &str) -> ColoredString
 {
@@ -142,7 +182,41 @@ pub fn colored(text: &str) -> ColoredString
         for style in combined {
             item = test_style(style.trim())(item);
         }
-        format!("{}", item)
+
+        // Check style variations
+        let mut items: Vec<ColoredString> = vec![];
+        let mut is_first = true;
+        let mut id_end = 0;
+
+        for caps in iter_substyles(&item.clone()) {
+
+            let range = caps.get(0).unwrap().range();
+            id_end = range.end;
+
+            if range.start != 0 && is_first {
+                is_first = false;
+                let text = &item[0..range.start];
+                items.push(set_style_from(text, &item));
+            }
+            
+            let combined = caps[1].split("+");
+            let mut subitem = ColoredString::from(&caps[2]);
+            for style in combined {
+                subitem = test_style(style.trim())(subitem);
+            }
+            subitem = add_style_from(&item, &subitem);
+            items.push(subitem.clone());
+        }
+        if id_end != item.len() {
+            let text = &item[id_end..item.len()];
+            items.push(set_style_from(text, &item));
+        }
+
+        let mut res = "".to_owned();
+        for i in items {
+            res = format!("{}{}", res, &i);
+        }
+        res
     });
     ColoredString::from(updated.as_ref())
 }
@@ -162,14 +236,17 @@ impl<'a> Colored for &'a str
 
 
 
-
+// cargo test -- --nocapture
 
 #[cfg(test)]
 mod tests {
-    // use super::*;
+    use super::*;
 
     #[test]
     fn it_works() {
+
+        println!("{}", " dsq {red}red {+on_blue}blue{-} red{/} dsq".colored());
+        // println!("{}", "{red}red {+bold}bold{-} none {+italic}italic{-} red{/}".colored());
         // let result = add(2, 2);
         // assert_eq!(result, 4);
     }

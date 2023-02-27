@@ -7,7 +7,7 @@ GLOBAL:
 
 ROADMAP:
     ❑ How to handle => println!("{}", "{green}✔{/} File {bold+cyan}mod.rs{/} created".colored());
-    ❑ Add these to create substyles {+bold}} and {-bold}}
+    ✔ Add these to create substyles {+bold}} and {-bold}} @done(23-02-27)
     ❑ Review license
 
 NOTES:
