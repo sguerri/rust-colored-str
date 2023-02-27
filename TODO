@@ -1,0 +1,13 @@
+GLOBAL:
+    ❑ Readme
+    ❑ Documentation
+    ❑ Tests
+    ❑ Examples
+    ❑ Publication
+
+ROADMAP:
+    ❑ How to handle => println!("{}", "{green}✔{/} File {bold+cyan}mod.rs{/} created".colored());
+    ❑ Add these to create substyles {+bold}} and {-bold}}
+    ❑ Review license
+
+NOTES:

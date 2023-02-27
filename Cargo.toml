@@ -1,0 +1,15 @@
+[package]
+name = "colored-str"
+version = "0.1.0"
+edition = "2021"
+authors = ["Sebastien Guerri <sebastien.guerri@github.bmel.fr>"]
+description = "Add colors from text notations"
+license = "GPL-3.0-or-later"
+repository = "https://github.com/sguerri/colored-str"
+keywords = ["term", "color", "string", "term-painter", "ansi-term"]
+categories = ["command-line-interface"]
+
+[dependencies]
+colored = "2.0.0"
+lazy_static = "1.4.0"
+regex = "1.7.1"
