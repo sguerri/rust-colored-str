@@ -1,6 +1,6 @@
 [package]
 name = "colored-str"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Sebastien Guerri <sebastien.guerri@github.bmel.fr>"]
 description = "Coloring terminal by parsing string content"

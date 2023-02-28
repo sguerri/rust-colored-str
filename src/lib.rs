@@ -28,7 +28,7 @@
 //! 
 //! ```toml
 //! [dependencies]
-//! colored-str = "0.1.0"
+//! colored-str = "0.1.1"
 //! ```
 //! 
 //! ## How to use
