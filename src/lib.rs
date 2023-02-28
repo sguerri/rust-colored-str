@@ -29,7 +29,7 @@ fn get_styles<R>(text: &str, rep: R) -> Cow<str>
 {
     lazy_static! {
         // static ref RE: Regex = Regex::new(r"\{(.+?)\}(.*?)\{/\}").unwrap();
-        static ref RE: Regex = Regex::new(r"<(.+?)>(.*?)</>").unwrap();
+        static ref RE: Regex = Regex::new(r"<(.+?)>((.|\n)*?)</>").unwrap();
     }
     RE.replace_all(text, rep)
 }
@@ -38,7 +38,8 @@ fn iter_substyles(text: &str) -> CaptureMatches
 {
     lazy_static! {
         // static ref RE: Regex = Regex::new(r"\{\+(.+?)\}(.*?)\{-\}").unwrap();
-        static ref RE: Regex = Regex::new(r"<\+(.+?)>(.*?)<->").unwrap();
+        // static ref RE: Regex = Regex::new(r"<\+(.+?)>(.*?)<->").unwrap();
+        static ref RE: Regex = Regex::new(r"<\+(.+?)>((.|\n)*?)<->").unwrap();
     }
     RE.captures_iter(text)
 }
