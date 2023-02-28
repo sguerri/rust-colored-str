@@ -1,5 +1,8 @@
 # Welcome to colored-str for Rust
 
+[![](https://badgen.net/github/release/sguerri/rust-colored-str)](https://github.com/sguerri/rust-colored-str/releases/)
+[![](https://img.shields.io/github/actions/workflow/status/sguerri/rust-colored-str/release.yml)](https://github.com/sguerri/rust-colored-str/actions/workflows/release.yml)
+[![](https://badgen.net/crates/v/colored-str)](https://crates.io/crates/colored-str)
 [![](https://badgen.net/github/license/sguerri/rust-colored-str)](https://www.gnu.org/licenses/)
 [![](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](#)
 
@@ -31,7 +34,7 @@ This crate is [on crates.io](https://crates.io/crates/colored-str) and can be us
 
 ```toml
 [dependencies]
-colored-str = "0.1.1"
+colored-str = "0.1.2"
 ```
 
 ## How to use
