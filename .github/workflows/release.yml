@@ -49,12 +49,14 @@ jobs:
 
       - name: Create GitHub release
         id: release
-        uses: actions/create-release@v1
+        # uses: actions/create-release@v1
+        uses: elgohr/Github-Release-Action@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.RG_VERSION }}
-          release_name: ${{ env.RG_VERSION }}
+          title: Version ${{ env.RG_VERSION }}
+          # tag_name: ${{ env.RG_VERSION }}
+          # release_name: ${{ env.RG_VERSION }}
 
   # build-release:
   #   name: build-release
