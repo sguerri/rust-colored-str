@@ -19,9 +19,9 @@ on:
   push:
     tags: ["v[0-9]+.[0-9]+.[0-9]+"]
 
-# env:
+env:
 #   APP_NAME: ppass
-#   APP_VERSION: "1.3.3"
+  RG_VERSION: "0.0.1"
 #   PPA_REPO: sguerri/ppa
 #   PPA_USER: Sébastien GUERRI
 #   PPA_EMAIL: 13090870+sguerri@users.noreply.github.com
@@ -35,16 +35,17 @@ jobs:
     runs-on: ubuntu-22.04
     outputs:
       upload_url: ${{ steps.release.outputs.upload_url }}
-      rg_version: ${{ env.RG_VERSION }}
+      # rg_version: ${{ env.RG_VERSION }}
 
     steps:
 
-      - name: Get the release version from the tag
-        shell: bash
-        if: env.RG_VERSION == ''
-        run: |
-          echo "RG_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-          echo "version is: ${{ env.RG_VERSION }}"
+      # - name: Get the release version from the tag
+      #   shell: bash
+      #   if: env.RG_VERSION == ''
+      #   run: |
+      #     echo "RG_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+      #     echo "version is: ${{ env.RG_VERSION }}"
+      #     echo "::set-output name=tag::$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')"
 
       - name: Create GitHub release
         id: release
