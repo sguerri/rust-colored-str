@@ -21,7 +21,7 @@ This crate is [on crates.io](https://crates.io/crates/colored-str) and can be us
 
 ```toml
 [dependencies]
-colored-str = "0.1.5"
+colored-str = "0.1.6"
 ```
 
 ## How to use
