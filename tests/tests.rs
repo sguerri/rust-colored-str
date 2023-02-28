@@ -1,6 +1,8 @@
 use colored_str::*;
 
 // cargo test -- --nocapture
+// cargo clippy -- -Dwarnings
+
 
 #[cfg(test)]
 mod tests {
@@ -27,6 +29,8 @@ mod tests {
 
         assert_eq!(colored("<+red>toto").to_string(), "<+red>toto");
         assert_eq!(colored("<+red>toto<->").to_string(), "<+red>toto<->");
+        assert_eq!(colored("<+bold><->").to_string(), "<+bold><->");
+        assert_eq!(colored("<red><+blue>toto</>").to_string(), "\x1B[31m<+blue>toto\x1B[0m");
     }
     
     #[test]
@@ -69,7 +73,17 @@ mod tests {
     {
         assert_eq!(colored("<red><+bold><-></>").to_string(), "");
 
+        assert_eq!(colored("<red><+bold>toto<-></>").to_string(), "\x1B[1;31mtoto\x1B[0m");
+        assert_eq!(colored("<red><+blue>toto<-></>").to_string(), "\x1B[34mtoto\x1B[0m");
+
         assert_eq!(colored("<red>toto<+bold>toto<-></>").to_string(), "\x1B[31mtoto\x1B[0m\x1B[1;31mtoto\x1B[0m");
+        assert_eq!(colored("<red><+bold>toto<->toto</>").to_string(), "\x1B[1;31mtoto\x1B[0m\x1B[31mtoto\x1B[0m");
+        assert_eq!(colored("<red>toto<+bold>toto<->toto</>").to_string(), "\x1B[31mtoto\x1B[0m\x1B[1;31mtoto\x1B[0m\x1B[31mtoto\x1B[0m");
+
+        assert_eq!(colored("<red><+bold+on_blue>toto<-></>").to_string(), "\x1B[1;44;31mtoto\x1B[0m");
+
+
+        // assert_eq!(colored("<red>toto<+bold>toto<->toto</>").to_string(), "\x1B[31mtoto\x1B[0m\x1B[1;31mtoto\x1B[0m\x1B[31mtoto\x1B[0m");
     }
 
     #[test]
