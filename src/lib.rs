@@ -1,7 +1,6 @@
 #![warn(missing_docs)]
-#![warn(missing_doc_code_examples)]
 
-//! dsq
+//! Coloring terminal 
 
 use std::borrow::Cow;
 
@@ -13,6 +12,7 @@ use lazy_static::lazy_static;
 
 use colored::*;
 
+/// Regex to check truecolor foreground format
 fn is_truecolor(text: &str) -> bool
 {
     lazy_static! {
@@ -21,6 +21,7 @@ fn is_truecolor(text: &str) -> bool
     RE.is_match(text)
 }
 
+/// Regex to check truecolor background format
 fn is_on_truecolor(text: &str) -> bool
 {
     lazy_static! {
@@ -29,28 +30,26 @@ fn is_on_truecolor(text: &str) -> bool
     RE.is_match(text)
 }
 
+/// Regex to retrieve all styled blocks
 fn get_styles<R>(text: &str, rep: R) -> Cow<str>
     where R: Replacer
 {
     lazy_static! {
-        // static ref RE: Regex = Regex::new(r"\{(.+?)\}(.*?)\{/\}").unwrap();
         static ref RE: Regex = Regex::new(r"<(.+?)>((.|\n)*?)</>").unwrap();
     }
     RE.replace_all(text, rep)
 }
 
+/// Regex to retrieve all style modification subblocks
 fn iter_substyles(text: &str) -> CaptureMatches
 {
     lazy_static! {
-        // static ref RE: Regex = Regex::new(r"\{\+(.+?)\}(.*?)\{-\}").unwrap();
-        // static ref RE: Regex = Regex::new(r"<\+(.+?)>(.*?)<->").unwrap();
         static ref RE: Regex = Regex::new(r"<\+(.+?)>((.|\n)*?)<->").unwrap();
     }
     RE.captures_iter(text)
 }
 
-
-
+/// If style is truecolor foreground, apply style
 fn test_truecolor(style: &'_ str, content: &ColoredString) -> Option<ColoredString>
 {
     if !is_truecolor(style) {
@@ -66,6 +65,7 @@ fn test_truecolor(style: &'_ str, content: &ColoredString) -> Option<ColoredStri
     Some(content.clone().truecolor(r, g, b))
 }
 
+/// If style is backcolor foreground, apply style
 fn test_on_truecolor(style: &'_ str, content: &ColoredString) -> Option<ColoredString>
 {
     if !is_on_truecolor(style) {
@@ -81,6 +81,7 @@ fn test_on_truecolor(style: &'_ str, content: &ColoredString) -> Option<ColoredS
     Some(content.clone().on_truecolor(r, g, b))
 }
 
+/// Returns the function to apply in case generic ColoredString function does not apply
 fn test_other(style: &'_ str) -> impl Fn(ColoredString) -> ColoredString + '_
 {
     move |content: ColoredString| {
@@ -89,15 +90,13 @@ fn test_other(style: &'_ str) -> impl Fn(ColoredString) -> ColoredString + '_
         } else if let Some(result) = test_on_truecolor(style, &content) {
             result
         } else {
-            // let colored = format!("{{{}}}{}{{/}}", style, content);
             let colored = format!("<{}>{}</>", style, content);
             ColoredString::from(colored.as_ref())    
         }
     }
 }
 
-
-
+/// Returns the function to apply in case generic ColoredString function exists
 fn test_style<'a>(style: &'a str) -> Box<dyn Fn(ColoredString) -> ColoredString + 'a>
 {
     match style.to_lowercase().as_str() {
@@ -154,6 +153,7 @@ fn test_style<'a>(style: &'a str) -> Box<dyn Fn(ColoredString) -> ColoredString 
     }
 }
 
+/// Overwrite the style of first entry with the style of second entry
 fn update_with_style(text: ColoredString, colored: &ColoredString) -> ColoredString
 {
     let mut result = text;
@@ -174,6 +174,7 @@ fn update_with_style(text: ColoredString, colored: &ColoredString) -> ColoredStr
     result
 }
 
+/// Add a given ColoredString style to an unstyled text
 fn set_style_from(text: &str, colored: &ColoredString) -> ColoredString
 {
     let mut result = ColoredString::from(text);
@@ -181,12 +182,24 @@ fn set_style_from(text: &str, colored: &ColoredString) -> ColoredString
     result
 }
 
+/// Add a given ColoredString style to an already styled text (overwrite content)
 fn add_style_from(colored_from: &ColoredString, colored_to: &ColoredString) -> ColoredString
 {
     let mut result = set_style_from(colored_to, colored_from);
     result = update_with_style(result, colored_to);
     result
 }
+
+
+
+
+
+
+
+
+
+
+
 
 /// Creates a new [`ColoredString`][1] by parsing given text.
 ///
@@ -210,32 +223,32 @@ fn add_style_from(colored_from: &ColoredString, colored_to: &ColoredString) -> C
 pub fn colored(text: &str) -> ColoredString
 {
     let updated = get_styles(text, |caps: &Captures| {
+
+        // Create main styled item based on capture
         let combined = caps[1].split('+');
         let mut item = ColoredString::from(&caps[2]);
         for style in combined {
             item = test_style(style.trim())(item);
         }
 
-        // Check style variations
         let mut items: Vec<ColoredString> = vec![];
-        // let mut is_first = true;
         let mut id_start = 0;
         let mut id_end = 0;
 
+        // Add substyles
         for caps in iter_substyles(&item) {
-        // for caps in iter_substyles(&item.clone()) {
 
             let range = caps.get(0).unwrap().range();
             id_end = range.end;
 
-            // if range.start != 0 && is_first {
-                // is_first = false;
+            // Add styled item before the capture if text is not empty
             if id_start != range.start {
                 let text = &item[id_start..range.start];
                 items.push(set_style_from(text, &item));
                 id_start = id_end;
             }
 
+            // Add substyled item if not empty
             if !&caps[2].is_empty() {
                 let combined = caps[1].split('+');
                 let mut subitem = ColoredString::from(&caps[2]);
@@ -246,17 +259,21 @@ pub fn colored(text: &str) -> ColoredString
                 items.push(subitem.clone());
             }
         }
+
+        // Add styled item after all captures (end of the string)
         if id_end != item.len() {
             let text = &item[id_end..item.len()];
             items.push(set_style_from(text, &item));
         }
 
+        // Join all items
         let mut res = "".to_owned();
         for i in items {
             res = format!("{}{}", res, &i);
         }
         res
     });
+
     ColoredString::from(updated.as_ref())
 }
 
