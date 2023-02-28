@@ -3,7 +3,7 @@
 [![](https://badgen.net/github/license/sguerri/rust-colored-str)](https://www.gnu.org/licenses/)
 [![](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](#)
 
-> Add colors from text notations
+> Coloring terminal by parsing string content
 
 TODO description
 

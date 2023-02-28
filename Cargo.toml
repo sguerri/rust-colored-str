@@ -1,15 +1,15 @@
 [package]
 name = "colored-str"
-version = "0.1.0"
+version = "2.0.1"
 edition = "2021"
 authors = ["Sebastien Guerri <sebastien.guerri@github.bmel.fr>"]
-description = "Add colors from text notations"
+description = "Coloring terminal by parsing string content"
 license = "GPL-3.0-or-later"
-repository = "https://github.com/sguerri/colored-str"
+repository = "https://github.com/sguerri/rust-colored-str"
 keywords = ["term", "color", "string", "term-painter", "ansi-term"]
 categories = ["command-line-interface"]
 
 [dependencies]
-colored = "2.0.0"
+colored = { version = "2.0.1" }
 lazy_static = "1.4.0"
 regex = "1.7.1"
