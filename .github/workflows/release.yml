@@ -15,8 +15,9 @@
 
 name: release
 
-on: [push]
-#     tags: ["v[0-9]+.[0-9]+.[0-9]+"]
+on:
+  push:
+    tags: ["v[0-9]+.[0-9]+.[0-9]+"]
 
 # env:
 #   APP_NAME: ppass
@@ -45,14 +46,14 @@ jobs:
           echo "RG_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
           echo "version is: ${{ env.RG_VERSION }}"
 
-      # - name: Create GitHub release
-      #   id: release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: ${{ env.RG_VERSION }}
-      #     release_name: ${{ env.RG_VERSION }}
+      - name: Create GitHub release
+        id: release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.RG_VERSION }}
+          release_name: ${{ env.RG_VERSION }}
 
   # build-release:
   #   name: build-release
