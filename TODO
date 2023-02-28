@@ -6,8 +6,9 @@ GLOBAL:
     ❑ Publication
 
 ROADMAP:
-    ❑ How to handle => println!("{}", "{green}✔{/} File {bold+cyan}mod.rs{/} created".colored());
-    ✔ Add these to create substyles {+bold}} and {-bold}} @done(23-02-27)
+    ❑ Fix missing text between substyles
+    ✔ How to handle => println!("{}", "{green}✔{/} File {bold+cyan}mod.rs{/} created".colored()); @done(28-02-2023)
+    ✔ Add these to create substyles {+bold}} and {-bold}} @done(27-02-2023)
     ❑ Review license
 
 NOTES:

@@ -28,7 +28,8 @@ fn get_styles<R>(text: &str, rep: R) -> Cow<str>
     where R: Replacer
 {
     lazy_static! {
-        static ref RE: Regex = Regex::new(r"\{(.+?)\}(.*?)\{/\}").unwrap();
+        // static ref RE: Regex = Regex::new(r"\{(.+?)\}(.*?)\{/\}").unwrap();
+        static ref RE: Regex = Regex::new(r"<(.+?)>(.*?)</>").unwrap();
     }
     RE.replace_all(text, rep)
 }
@@ -36,7 +37,8 @@ fn get_styles<R>(text: &str, rep: R) -> Cow<str>
 fn iter_substyles(text: &str) -> CaptureMatches
 {
     lazy_static! {
-        static ref RE: Regex = Regex::new(r"\{\+(.+?)\}(.*?)\{-\}").unwrap();
+        // static ref RE: Regex = Regex::new(r"\{\+(.+?)\}(.*?)\{-\}").unwrap();
+        static ref RE: Regex = Regex::new(r"<\+(.+?)>(.*?)<->").unwrap();
     }
     RE.captures_iter(text)
 }
@@ -235,6 +237,37 @@ impl<'a> Colored for &'a str
 }
 
 
+#[macro_export]
+macro_rules! colored {
+    () => {
+        print!()
+    };
+    ($top:tt) => {
+        let msg = format!($top);
+        print!("{}", $crate::colored(&msg));
+    };
+    ($top:tt, $($arg:tt)*) => {
+        let msg = format!($top, $($arg)*);
+        print!("{}", $crate::colored(&msg));
+    };
+}
+
+
+#[macro_export]
+macro_rules! coloredln {
+    () => {
+        println!()
+    };
+    ($top:tt) => {
+        let msg = format!($top);
+        println!("{}", $crate::colored(&msg));
+    };
+    ($top:tt, $($arg:tt)*) => {
+        let msg = format!($top, $($arg)*);
+        println!("{}", $crate::colored(&msg));
+    };
+}
+
 
 // cargo test -- --nocapture
 
@@ -245,7 +278,9 @@ mod tests {
     #[test]
     fn it_works() {
 
-        println!("{}", " dsq {red}red {+on_blue}blue{-} red{/} dsq".colored());
+        colored!("dsq <red>red <+on_blue>dqsdqs<-> red</> dsq");
+        coloredln!("dsq <red>red <+on_blue>dqsdqs<-> red</> dsq");
+        println!("{}", " dsq <red>red <+on_blue>blue<-> red</> dsq".colored());
         // println!("{}", "{red}red {+bold}bold{-} none {+italic}italic{-} red{/}".colored());
         // let result = add(2, 2);
         // assert_eq!(result, 4);
