@@ -3,7 +3,7 @@ GLOBAL:
     ✔ Documentation @done(28-02-2023)
     ✔ Tests @done(28-02-2023)
     ✘ Examples @cancelled(28-02-2023)
-    ❑ Publication
+    ✔ Publication @done(28-02-2023)
 
 ROADMAP:
     ✔ Fix missing text between substyles @done(28-02-2023)
@@ -15,4 +15,4 @@ ROADMAP:
 NOTES:
     ✔ cargo doc --no-deps @done(28-02-2023)
     ✔ cargo test -- --nocapture @done(28-02-2023)
-    ❑ cargo clippy -- -Dwarnings
+    ✔ cargo clippy -- -Dwarnings @done(28-02-2023)
