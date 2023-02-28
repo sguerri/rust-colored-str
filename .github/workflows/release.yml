@@ -21,7 +21,7 @@ on:
 
 env:
 #   APP_NAME: ppass
-  RG_VERSION: "0.0.3"
+  RG_VERSION: "0.1.0"
 #   PPA_REPO: sguerri/ppa
 #   PPA_USER: Sébastien GUERRI
 #   PPA_EMAIL: 13090870+sguerri@users.noreply.github.com
@@ -33,8 +33,8 @@ jobs:
 
     name: create-release
     runs-on: ubuntu-22.04
-    outputs:
-      upload_url: ${{ steps.release.outputs.upload_url }}
+    # outputs:
+      # upload_url: ${{ steps.release.outputs.upload_url }}
       # rg_version: ${{ env.RG_VERSION }}
 
     steps:
