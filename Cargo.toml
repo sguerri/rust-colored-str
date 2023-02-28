@@ -1,6 +1,6 @@
 [package]
 name = "colored-str"
-version = "2.0.1"
+version = "0.0.0"
 edition = "2021"
 authors = ["Sebastien Guerri <sebastien.guerri@github.bmel.fr>"]
 description = "Coloring terminal by parsing string content"
@@ -10,6 +10,6 @@ keywords = ["term", "color", "string", "term-painter", "ansi-term"]
 categories = ["command-line-interface"]
 
 [dependencies]
-colored = { version = "2.0.1" }
+colored = "2.0.0"
 lazy_static = "1.4.0"
 regex = "1.7.1"
