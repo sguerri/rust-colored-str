@@ -9,10 +9,10 @@ ROADMAP:
     ✔ Fix missing text between substyles @done(28-02-2023)
     ✔ How to handle => println!("{}", "{green}✔{/} File {bold+cyan}mod.rs{/} created".colored()); @done(28-02-2023)
     ✔ Add these to create substyles {+bold}} and {-bold}} @done(27-02-2023)
-    ❑ Review license
+    ✔ Review license @done(28-02-2023)
     ✔ Version handling : in lib.rs (doc) @done(28-02-2023)
 
 NOTES:
-    ❑ cargo doc --no-deps
-    ❑ cargo test -- --nocapture
+    ✔ cargo doc --no-deps @done(28-02-2023)
+    ✔ cargo test -- --nocapture @done(28-02-2023)
     ❑ cargo clippy -- -Dwarnings
