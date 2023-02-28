@@ -187,7 +187,8 @@ pub fn colored(text: &str) -> ColoredString
 
         // Check style variations
         let mut items: Vec<ColoredString> = vec![];
-        let mut is_first = true;
+        // let mut is_first = true;
+        let mut id_start = 0;
         let mut id_end = 0;
 
         for caps in iter_substyles(&item.clone()) {
@@ -195,11 +196,12 @@ pub fn colored(text: &str) -> ColoredString
             let range = caps.get(0).unwrap().range();
             id_end = range.end;
 
-            if range.start != 0 && is_first {
-                is_first = false;
-                let text = &item[0..range.start];
+            // if range.start != 0 && is_first {
+                // is_first = false;
+                let text = &item[id_start..range.start];
                 items.push(set_style_from(text, &item));
-            }
+                id_start = id_end;
+            // }
             
             let combined = caps[1].split("+");
             let mut subitem = ColoredString::from(&caps[2]);
@@ -278,9 +280,14 @@ mod tests {
     #[test]
     fn it_works() {
 
-        colored!("dsq <red>red <+on_blue>dqsdqs<-> red</> dsq");
-        coloredln!("dsq <red>red <+on_blue>dqsdqs<-> red</> dsq");
-        println!("{}", " dsq <red>red <+on_blue>blue<-> red</> dsq".colored());
+        coloredln!("{}", "toto");
+        coloredln!("{}", "toto <red>red</>");
+        coloredln!("first <red>red <+on_blue>on_blue<-> red</> last");
+        coloredln!("first <red>red <+on_blue>on_blue<-> red</> middle <yellow>yellow</> last");
+        coloredln!("first <red>red <+on_blue>on_blue<-> red</> middle <yellow>yellow</> last");
+        coloredln!("first <red>red <+on_blue>on_blue<-> between <+on_yellow>on_yellow<-> red</> last");
+        coloredln!("first <red>red <+on_blue>on_blue<-> between <+on_yellow>on_yellow<-> between again <+on_green>on_green<-> red</> last");
+        // println!("{}", " dsq <red>red <+on_blue>blue<-> red</> dsq".colored());
         // println!("{}", "{red}red {+bold}bold{-} none {+italic}italic{-} red{/}".colored());
         // let result = add(2, 2);
         // assert_eq!(result, 4);
