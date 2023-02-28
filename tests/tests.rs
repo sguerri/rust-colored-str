@@ -9,6 +9,14 @@ mod tests {
     #[test]
     fn incorrect_assertions()
     {
+        assert_eq!(colored("<>").to_string(), "<>");
+        assert_eq!(colored("<+>").to_string(), "<+>");
+        assert_eq!(colored("<->").to_string(), "<->");
+        assert_eq!(colored("</>").to_string(), "</>");
+        assert_eq!(colored("<>toto").to_string(), "<>toto");
+        assert_eq!(colored("toto<>").to_string(), "toto<>");
+        assert_eq!(colored("<red>").to_string(), "<red>");
+
         assert_eq!(colored("<red>toto").to_string(), "<red>toto");
         assert_eq!(colored("toto<red>toto").to_string(), "toto<red>toto");
         assert_eq!(colored("toto</>").to_string(), "toto</>");
@@ -24,6 +32,8 @@ mod tests {
     #[test]
     fn correct_assertions()
     {
+        assert_eq!(colored("<red></>").to_string(), "");
+
         assert_eq!(colored("<red>toto</>").to_string(), "\x1B[31mtoto\x1B[0m");
         assert_eq!(colored("<on_red>toto</>").to_string(), "\x1B[41mtoto\x1B[0m");
         assert_eq!(colored("toto<red>toto</>").to_string(), "toto\x1B[31mtoto\x1B[0m");
@@ -57,6 +67,9 @@ mod tests {
     #[test]
     fn correct_assertions_subtypes()
     {
+        assert_eq!(colored("<red><+bold><-></>").to_string(), "");
+
+        assert_eq!(colored("<red>toto<+bold>toto<-></>").to_string(), "\x1B[31mtoto\x1B[0m\x1B[1;31mtoto\x1B[0m");
     }
 
     #[test]

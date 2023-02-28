@@ -205,18 +205,21 @@ pub fn colored(text: &str) -> ColoredString
 
             // if range.start != 0 && is_first {
                 // is_first = false;
+            if id_start != range.start {
                 let text = &item[id_start..range.start];
                 items.push(set_style_from(text, &item));
                 id_start = id_end;
-            // }
-            
-            let combined = caps[1].split("+");
-            let mut subitem = ColoredString::from(&caps[2]);
-            for style in combined {
-                subitem = test_style(style.trim())(subitem);
             }
-            subitem = add_style_from(&item, &subitem);
-            items.push(subitem.clone());
+
+            if &caps[2] != "" {
+                let combined = caps[1].split("+");
+                let mut subitem = ColoredString::from(&caps[2]);
+                for style in combined {
+                    subitem = test_style(style.trim())(subitem);
+                }
+                subitem = add_style_from(&item, &subitem);
+                items.push(subitem.clone());
+            }
         }
         if id_end != item.len() {
             let text = &item[id_end..item.len()];
