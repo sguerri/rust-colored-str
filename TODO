@@ -1,8 +1,8 @@
 GLOBAL:
     ❑ Readme
     ❑ Documentation
-    ❑ Tests
-    ❑ Examples
+    ✔ Tests @done(28-02-2023)
+    ✘ Examples @cancelled(28-02-2023)
     ❑ Publication
 
 ROADMAP:
