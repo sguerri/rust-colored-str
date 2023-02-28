@@ -1,8 +1,5 @@
 use colored_str::*;
 
-// cargo test -- --nocapture
-// cargo clippy -- -Dwarnings
-
 #[cfg(test)]
 mod tests {
     use super::*;

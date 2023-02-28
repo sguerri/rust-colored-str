@@ -1,3 +1,8 @@
+#![warn(missing_docs)]
+#![warn(missing_doc_code_examples)]
+
+//! dsq
+
 use std::borrow::Cow;
 
 use regex::Regex;
@@ -6,7 +11,7 @@ use regex::Captures;
 use regex::CaptureMatches;
 use lazy_static::lazy_static;
 
-pub use colored::*;
+use colored::*;
 
 fn is_truecolor(text: &str) -> bool
 {
@@ -183,6 +188,25 @@ fn add_style_from(colored_from: &ColoredString, colored_to: &ColoredString) -> C
     result
 }
 
+/// Creates a new [`ColoredString`][1] by parsing given text.
+///
+/// It will parse the given text, searching for `<...> * </>` blocks and `<+...> * <->`
+/// subblocks, to add corresponding styles to the text. It then returns a new
+/// instance of [`ColoredString`][1].
+///
+/// [1]: <https://docs.rs/colored/latest/colored/struct.ColoredString.html>
+/// 
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// use colored_str::colored;
+/// 
+/// println!("{}", colored("<red>this is red text</red>"));
+/// ```
+/// 
+/// See [crate] for other examples
 pub fn colored(text: &str) -> ColoredString
 {
     let updated = get_styles(text, |caps: &Captures| {
@@ -236,8 +260,12 @@ pub fn colored(text: &str) -> ColoredString
     ColoredString::from(updated.as_ref())
 }
 
+/// The trait that enables a string to be colorized
 pub trait Colored
 {
+    /// Creates a new [`ColoredString`][1] by parsing given text.
+    /// 
+    /// [1]: <https://docs.rs/colored/latest/colored/struct.ColoredString.html>
     fn colored(self) -> ColoredString;
 }
 
@@ -249,6 +277,23 @@ impl<'a> Colored for &'a str
     }
 }
 
+/// Creates a new [`String`] by parsing given text.
+///
+/// With nothing given returns an empty [`String`].  
+/// Otherwise format given parameters using `format!` macro then apply [`colored()`].
+///
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// use colored_str::cformat;
+/// 
+/// println!("{}", cformat!("<red>this is red text</red>"));
+/// println!("{}", cformat!("<red>this is {} text</red>", "red"));
+/// ```
+/// 
+/// See [crate] for other examples
 #[macro_export]
 macro_rules! cformat {
     () => {
@@ -264,6 +309,23 @@ macro_rules! cformat {
     });
 }
 
+/// Print colored text to standard output.
+///
+/// With nothing given does nothing.  
+/// Otherwise format given parameters using `format!` macro, apply [`colored()`], then [`print!`] to standard output.
+///
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// use colored_str::colored;
+/// 
+/// colored!("<red>this is red text</red>");
+/// colored!("<red>this is {} text</red>", "red");
+/// ```
+/// 
+/// See [crate] for other examples
 #[macro_export]
 macro_rules! colored {
     () => {
@@ -280,6 +342,23 @@ macro_rules! colored {
 }
 
 
+/// Print colored text to standard output with newline at the end.
+///
+/// With nothing given does nothing.  
+/// Otherwise format given parameters using `format!` macro, apply [`colored()`], then [`println!`] to standard output.
+///
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// use colored_str::coloredln;
+/// 
+/// coloredln!("<red>this is red text</red>");
+/// coloredln!("<red>this is {} text</red>", "red");
+/// ```
+/// 
+/// See [crate] for other examples
 #[macro_export]
 macro_rules! coloredln {
     () => {

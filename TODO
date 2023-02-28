@@ -12,3 +12,6 @@ ROADMAP:
     ❑ Review license
 
 NOTES:
+    ❑ cargo doc --no-deps
+    ❑ cargo test -- --nocapture
+    ❑ cargo clippy -- -Dwarnings
