@@ -83,7 +83,8 @@ fn test_other<'a>(style: &'a str) -> impl Fn(ColoredString) -> ColoredString + '
         } else if let Some(result) = test_on_truecolor(style, &content) {
             result
         } else {
-            let colored = format!("{{{}}}{}{{/}}", style, content);
+            // let colored = format!("{{{}}}{}{{/}}", style, content);
+            let colored = format!("<{}>{}</>", style, content);
             ColoredString::from(colored.as_ref())    
         }
     }
@@ -241,15 +242,15 @@ impl<'a> Colored for &'a str
 #[macro_export]
 macro_rules! cformat {
     () => {
-        ""
+        String::from("")
     };
     ($top:tt) => ({
         let msg = format!($top);
-        &$crate::colored(&msg).to_string()
+        $crate::colored(&msg).to_string()
     });
     ($top:tt, $($arg:tt)*) => ({
         let msg = format!($top, $($arg)*);
-        &$crate::colored(&msg).to_string()
+        $crate::colored(&msg).to_string()
     });
 }
 
