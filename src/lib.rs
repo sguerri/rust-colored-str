@@ -46,7 +46,7 @@ fn iter_substyles(text: &str) -> CaptureMatches
 
 
 
-fn test_truecolor<'a>(style: &'a str, content: &ColoredString) -> Option<ColoredString>
+fn test_truecolor(style: &'_ str, content: &ColoredString) -> Option<ColoredString>
 {
     if !is_truecolor(style) {
         return None
@@ -55,13 +55,13 @@ fn test_truecolor<'a>(style: &'a str, content: &ColoredString) -> Option<Colored
     let red = &style[1..3];
     let green = &style[3..5];
     let blue = &style[5..7];
-    let r = u8::from_str_radix(&red, 16).expect("invalid color");
-    let g = u8::from_str_radix(&green, 16).expect("invalid color");
-    let b = u8::from_str_radix(&blue, 16).expect("invalid color");
+    let r = u8::from_str_radix(red, 16).expect("invalid color");
+    let g = u8::from_str_radix(green, 16).expect("invalid color");
+    let b = u8::from_str_radix(blue, 16).expect("invalid color");
     Some(content.clone().truecolor(r, g, b))
 }
 
-fn test_on_truecolor<'a>(style: &'a str, content: &ColoredString) -> Option<ColoredString>
+fn test_on_truecolor(style: &'_ str, content: &ColoredString) -> Option<ColoredString>
 {
     if !is_on_truecolor(style) {
         return None
@@ -70,13 +70,13 @@ fn test_on_truecolor<'a>(style: &'a str, content: &ColoredString) -> Option<Colo
     let red = &style[4..6];
     let green = &style[6..8];
     let blue = &style[8..10];
-    let r = u8::from_str_radix(&red, 16).expect("invalid color");
-    let g = u8::from_str_radix(&green, 16).expect("invalid color");
-    let b = u8::from_str_radix(&blue, 16).expect("invalid color");
+    let r = u8::from_str_radix(red, 16).expect("invalid color");
+    let g = u8::from_str_radix(green, 16).expect("invalid color");
+    let b = u8::from_str_radix(blue, 16).expect("invalid color");
     Some(content.clone().on_truecolor(r, g, b))
 }
 
-fn test_other<'a>(style: &'a str) -> impl Fn(ColoredString) -> ColoredString + 'a
+fn test_other(style: &'_ str) -> impl Fn(ColoredString) -> ColoredString + '_
 {
     move |content: ColoredString| {
         if let Some(result) = test_truecolor(style, &content) {
@@ -145,7 +145,7 @@ fn test_style<'a>(style: &'a str) -> Box<dyn Fn(ColoredString) -> ColoredString 
         "hidden" => Box::new(&ColoredString::hidden),
         "strikethrough" => Box::new(&ColoredString::strikethrough),
 
-        _ => Box::new(test_other(&style))
+        _ => Box::new(test_other(style))
     }
 }
 
@@ -178,7 +178,7 @@ fn set_style_from(text: &str, colored: &ColoredString) -> ColoredString
 
 fn add_style_from(colored_from: &ColoredString, colored_to: &ColoredString) -> ColoredString
 {
-    let mut result = set_style_from(&colored_to, colored_from);
+    let mut result = set_style_from(colored_to, colored_from);
     result = update_with_style(result, colored_to);
     result
 }
@@ -186,7 +186,7 @@ fn add_style_from(colored_from: &ColoredString, colored_to: &ColoredString) -> C
 pub fn colored(text: &str) -> ColoredString
 {
     let updated = get_styles(text, |caps: &Captures| {
-        let combined = caps[1].split("+");
+        let combined = caps[1].split('+');
         let mut item = ColoredString::from(&caps[2]);
         for style in combined {
             item = test_style(style.trim())(item);
@@ -198,7 +198,8 @@ pub fn colored(text: &str) -> ColoredString
         let mut id_start = 0;
         let mut id_end = 0;
 
-        for caps in iter_substyles(&item.clone()) {
+        for caps in iter_substyles(&item) {
+        // for caps in iter_substyles(&item.clone()) {
 
             let range = caps.get(0).unwrap().range();
             id_end = range.end;
@@ -211,8 +212,8 @@ pub fn colored(text: &str) -> ColoredString
                 id_start = id_end;
             }
 
-            if &caps[2] != "" {
-                let combined = caps[1].split("+");
+            if !&caps[2].is_empty() {
+                let combined = caps[1].split('+');
                 let mut subitem = ColoredString::from(&caps[2]);
                 for style in combined {
                     subitem = test_style(style.trim())(subitem);
