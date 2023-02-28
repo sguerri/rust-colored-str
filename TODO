@@ -1,6 +1,6 @@
 GLOBAL:
-    ❑ Readme
-    ❑ Documentation
+    ✔ Readme @done(28-02-2023)
+    ✔ Documentation @done(28-02-2023)
     ✔ Tests @done(28-02-2023)
     ✘ Examples @cancelled(28-02-2023)
     ❑ Publication
@@ -10,7 +10,7 @@ ROADMAP:
     ✔ How to handle => println!("{}", "{green}✔{/} File {bold+cyan}mod.rs{/} created".colored()); @done(28-02-2023)
     ✔ Add these to create substyles {+bold}} and {-bold}} @done(27-02-2023)
     ❑ Review license
-    ❑ Version handling : in lib.rs (doc)
+    ✔ Version handling : in lib.rs (doc) @done(28-02-2023)
 
 NOTES:
     ❑ cargo doc --no-deps
