@@ -1,4 +1,4 @@
-# Welcome to colored-str for Rust
+# colored-str
 
 [![](https://badgen.net/github/release/sguerri/rust-colored-str)](https://github.com/sguerri/rust-colored-str/releases/)
 [![](https://img.shields.io/github/actions/workflow/status/sguerri/rust-colored-str/release.yml)](https://github.com/sguerri/rust-colored-str/actions/workflows/release.yml)
@@ -14,19 +14,6 @@ This crate is an extension to the [colored](https://crates.io/crates/colored) cr
  - Translate [colored](https://crates.io/crates/colored) features into string templating
  - Multiple styles and substyles in one same string
  - Macros to replace `format!` and `println!` with colored strings
-
----
-
-- [Welcome to colored-str for Rust](#welcome-to-colored-str-for-rust)
-  - [Usage](#usage)
-  - [How to use](#how-to-use)
-  - [Limitations](#limitations)
-  - [Examples](#examples)
-  - [List of styles](#list-of-styles)
-  - [Dependencies](#dependencies)
-  - [Issues](#issues)
-  - [License](#license)
-  - [Contributors](#contributors)
 
 ## Usage
 
