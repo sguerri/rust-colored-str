@@ -83,6 +83,9 @@ mod tests {
         assert_eq!(colored("<bold+italic>toto</>").to_string(), "\x1B[1;3mtoto\x1B[0m");
 
         assert_eq!(colored("<red>toto\ntoto</>").to_string(), "\x1B[31mtoto\ntoto\x1B[0m");
+
+        assert_eq!(colored("toto<<red>toto</>>toto").to_string() , "toto<\x1B[31mtoto\x1B[0m>toto");
+        assert_eq!(colored("toto<toto<red>toto</>toto>toto").to_string() , "toto<toto\x1B[31mtoto\x1B[0mtoto>toto");
     }
 
     #[test]
